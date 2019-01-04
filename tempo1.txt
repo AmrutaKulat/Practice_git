@@ -6,8 +6,7 @@ MapR
 Cloudera
 TensorFlow
 PyTorch
-Hadoop OR
-Spark
+
 
 If any of the techs don't exist that's fine just omit them. Give me count and sample of 100 companies with full records (no nulls in any field)
 
