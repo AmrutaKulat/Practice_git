@@ -1,0 +1,39 @@
+Can I get a count for the following tech
+
+Kubernetes 
+Anaconda 
+MapR
+Cloudera
+TensorFlow
+PyTorch
+Hadoop OR
+Spark
+
+If any of the techs don't exist that's fine just omit them. Give me count and sample of 100 companies with full records (no nulls in any field)
+
+I want is companies that are using all the tech, then 5 techs and 4 and so on
+
+The idea is any company that is using most of the tech then they would be a good target, as Cisco C480 ML box has all tech embedded in it.
+-----------------------------------------------------------------
+ --CTE for technographics
+with CTE_sampleinstall3 as (select distinct i.website,case when  i.topic ='KUBERNETES' then 'KUBERNETES'
+                            when i.topic ='MAPR' then 'MAPR'
+                            when i.topic ='TENSORFLOW' then 'TENSORFLOW'
+                            when (i.topic ='APACHE HADOOP'or i.topic ='APACHE HADOOP HDFS') then 'HADOOP'
+                             when (i.topic ='CLOUDERA'or i.topic ='CLOUDERA CDH' or i.topic ='CLOUDERA ENTERPRISE BDR'
+                                or i.topic ='CLOUDERA GAZZANG' or i.topic ='CLOUDERA IMPALA' or i.topic ='CLOUDERA MANAGER' or i.topic ='CLOUDERA NAVIGATOR' )then 'CLOUDERA'  
+                            when i.topic ='APACHE SPARK' then 'SPARK'
+                            end as topic,
+                            i.intensity
+                            from dmdatalake_prod.installbasev2 i
+                       where  i.topic in('KUBERNETES','MAPR','CLOUDERA','CLOUDERA CDH','CLOUDERA ENTERPRISE BDR','CLOUDERA GAZZANG','CLOUDERA IMPALA','CLOUDERA MANAGER','CLOUDERA NAVIGATOR','TENSORFLOW','APACHE HADOOP','APACHE HADOOP HDFS','APACHE SPARK'))
+select i.website,
+count(case when i.topic='KUBERNETES' then i.topic  end) as KUBERNETES,
+count(case when i.topic='MAPR' then i.topic  end) as MAPR,
+count(case when i.topic='TENSORFLOW' then i.topic  end) as TENSORFLOW,
+count(case when i.topic='HADOOP' then i.topic  end) as HADOOP,
+count(case when i.topic='CLOUDERA' then i.topic  end) as CLOUDERA,
+count(case when i.topic='SPARK' then i.topic  end) as SPARK,
+count(distinct i.topic)
+from CTE_sampleinstall3 i
+group by i.website 
